@@ -1,0 +1,20 @@
+.card-parent{
+    width: 100%;
+}
+.card-image{
+    padding:20%;
+}
+.botao-comprar{
+    width: fit-content;
+    align-self: center;
+}
+.float-right{
+   display: block;
+   float: right;
+}
+.icone-editar{
+    color: inherit;
+}
+.preco{
+    font-size: 1.3rem;
+}

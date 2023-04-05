@@ -1,0 +1,19 @@
+.formEditarProduto {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.form-label{
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.float-end
+{
+    display: block;
+    float: right;
+
+}
