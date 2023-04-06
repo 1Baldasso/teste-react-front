@@ -5,7 +5,6 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './styles.css'
-import { NavItem } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom'
 export default function Header() {
     const currentPath = useLocation().pathname;
