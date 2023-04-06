@@ -1,19 +1,37 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+
 import Categorias from '../Categorias';
 import ProdutoItem from '../ProdutoItem';
-import Produto from '../../models/ProdutoModel';
-import config from '../../Config/config';
-import { getProdutos } from './services';
 import Ordenacao from '../Ordenacao';
+
+import Produto from '../../models/ProdutoModel';
+import { getProdutos } from './services';
+
 export default function Produtos() {
-  const originalProdutos = async () =>  await getProdutos();
+  const originalProdutos = async () => await getProdutos();
+
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [categoria, setCategoria] = useState<string>("Todos");
   const [width, setWidth] = useState<number>(window.innerWidth);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const nome = searchParams.get('nome');
+
   useEffect(() => {
+    if (nome) {
+      originalProdutos().then((produtos) => {
+        const produtosFiltrados = produtos.filter((produto) => {
+          return produto.nome.toLowerCase().includes(nome.toLowerCase());
+        });
+        setProdutos(produtosFiltrados);
+      });
+    }
+
     async function fetchProdutos() {
       try {
         const produtos = await getProdutos();
@@ -22,17 +40,19 @@ export default function Produtos() {
         // Handle error
       }
     }
+
     window.onresize = () => {
       setWidth(document.body.clientWidth);
     }
+
     document.addEventListener('onCategoriaChange', (event) => {
       const categoria = (event as CustomEvent).detail;
       setCategoria(categoria);
+
       if (categoria === "Todos") {
         originalProdutos().then((produtos) => {
           setProdutos(produtos);
         });
-
       } else {
         originalProdutos().then(
           (produtos) => produtos.filter((produto) => {
@@ -42,6 +62,7 @@ export default function Produtos() {
           });
       }
     });
+
     document.addEventListener('onOrdemChange', (event) => {
       const ordem = (event as CustomEvent).detail;
       if (ordem === "Menor Preço") {
@@ -65,24 +86,21 @@ export default function Produtos() {
           });
           setProdutos(produtos);
         });
-      } 
+      }
     });
 
     fetchProdutos();
   }, []);
-  useEffect(() => {
-    console.log(width)
-  }, [width])
 
   return (
     <main>
       <Container>
         <h2>Nossos Produtos</h2>
         <div className='d-flex flex-row justify-content-around'>
-          <Categorias/>
-          <Ordenacao/>
+          <Categorias />
+          <Ordenacao />
         </div>
-        <Row md={ width > 1024 ? 3 : width > 600 ? 2 : 1} className="g-4 gx-1">
+        <Row md={width > 1024 ? 3 : width > 600 ? 2 : 1} className="g-4 gx-1">
           {produtos.map((produto) => {
             return (
               <Col key={produto._id}>

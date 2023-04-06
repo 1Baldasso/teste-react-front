@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Produto from '../../models/ProdutoModel'
-import { useLocation } from 'react-router-dom'
+import { redirect, useLocation } from 'react-router-dom'
 import { adicionarProduto, editarProduto, deletarProduto } from './service'
 import './styles.css'
 import ProdutoModel from '../../models/ProdutoModel'
@@ -52,12 +52,30 @@ export default function FormProduto(props: { id?: string | undefined }) {
     }
     function handleCriar(){
         adicionarProduto(finalFields)
+            .then((produto) =>
+            {
+                alert('Produto criado com sucesso!')
+                redirect('/');
+            })
+            .catch(()=>alert('Erro ao criar produto!'));
+        redirect('/');
     }
     function handleEditar(){
-        editarProduto(props.id?? "",finalFields);
+        editarProduto(props.id?? "",finalFields).
+            then((produto) =>
+            {
+                alert('Produto editado com sucesso!')  
+                redirect('/');
+            }).catch(()=>alert('Erro ao editar produto!'));
     }
     function handleDeletar(){
-        deletarProduto(props.id?? "");
+        deletarProduto(props.id?? "")
+            .then((produto) =>
+            {
+                alert('Produto deletado com sucesso!')
+                redirect('/');
+            })
+            .catch(()=>alert('Erro ao deletar produto!'));
     }
     
     return (

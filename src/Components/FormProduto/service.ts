@@ -25,7 +25,7 @@ function adicionarProduto(produto: ProdutoModel)
     .then(response => response.json()
     .then(data => ({ status: response.status, body: data })))
     .then(({ status, body }) => {
-        if (status === 200) {
+        if (status === 201) {
             console.log(body);
         } else {
             throw new Error(`Erro ${status}: ${body.message}`);
@@ -51,6 +51,9 @@ function editarProduto(id:string, produto: ProdutoModel)
 }
 function deletarProduto(id:string)
 {
+    const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
+    const carrinhoAtualizado = carrinho.filter((item: any) => item.id !== id);
+    localStorage.setItem("carrinho", JSON.stringify(carrinhoAtualizado));
     return fetch(`${config.ENDPOINT}/produtos/${id}`, {
         method: 'DELETE',
         mode: 'cors'

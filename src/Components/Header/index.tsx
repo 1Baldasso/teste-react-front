@@ -5,12 +5,11 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './styles.css'
-import { useLocation } from 'react-router-dom'
+import { useLocation, redirect } from 'react-router-dom'
+import { useState } from 'react'
 export default function Header() {
+    const [pesquisa, setPesquisa] = useState<string>("");
     const currentPath = useLocation().pathname;
-    function handlePesquisar() {
-        console.log('Pesquisando...');
-    }
     return (
         <header>
             <Navbar expand="sm" className="header">
@@ -41,8 +40,9 @@ export default function Header() {
                                                 placeholder="Produto"
                                                 className="me-2"
                                                 aria-label="Search"
+                                                onChange={(e) => setPesquisa(e.target.value)}
                                             />
-                                            <Button variant="outline-secondary" onClick={handlePesquisar}>Pesquisar</Button>
+                                            <Button variant="outline-secondary" href={`/?nome=${pesquisa}`}>Pesquisar</Button>
                                         </Form>
                                     ) : null}
                                     <Nav>

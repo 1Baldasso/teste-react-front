@@ -21,8 +21,13 @@ export default function FormCompra(props: { id:string|undefined })
             setError(true);
             return;
         }
-        adicionarAoCarrinho(props.id?? "", quantidade);
-        redirect('/carrinho');
+        try{
+            adicionarAoCarrinho(props.id?? "", quantidade)
+            alert('Produto adicionado ao carrinho!')
+            redirect('/carrinho');
+        }catch{
+            alert('Erro ao adicionar produto ao carrinho!');
+        }
     }
     return(
         <>

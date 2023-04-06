@@ -4,6 +4,8 @@ export default function Footer()
         <footer className="pb-3">
             <hr/>
             © Lojas Baldasso 
+            |
+            Produtos meramente ilustrativos
         </footer>
     );
 }

@@ -16,16 +16,17 @@ export default function CarrinhoList() {
         setCarrinho(carrinho);
     }, []);
     useEffect(() => {
+        console.log(carrinho)
         async function fetchProdutos() {
             try {
                 const produtos = await Promise.all(carrinho.map(async (item) => {
-                    const produto = await getProdutoById(item.id);
-                    produto.quantidade = item.quantidade;
+                        const produto = await getProdutoById(item.id);
+                        produto.quantidade = item.quantidade;
                     return produto;
                 }));
                 setProdutos(produtos);
             } catch (error) {
-                // Handle error
+                console.log(error);
             }
         }
         fetchProdutos();
