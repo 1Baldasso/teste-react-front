@@ -1,25 +1,27 @@
 import { redirect } from 'react-router-dom'
-import Produto from '../../models/ProdutoModel'
+import ProdutoModel from '../../models/ProdutoModel';
+import { getProdutoById } from './services'
+import { useEffect, useState } from 'react';
 export default function Detalhes(props: {id: string | undefined})
 {
+    const [produto, setProduto] = useState<ProdutoModel>();
     if(props.id === undefined)
     {
         redirect('/');
     }
-    const produto: Produto = {
-        id: "abcguid123",
-        nome: "Produto Teste",
-        preco: 10,
-        categoria: "Teste",
-        descricao: "Teste",
-        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgcSwChHJkUqoevTLo7igM9V4iPvU64XYcJQ&usqp=CAU"
-    };
+    useEffect(() => {
+        getProdutoById(props.id??"")
+            .then((p: ProdutoModel) => setProduto(p))
+            .catch((error: Error) => console.log(error));
+    }, []);
+    
+
     return(
         <div className='d-flex flex-column align-items-center'>
-            <h4>{produto.nome}</h4>
-            <img src={produto.imagem} alt={produto.nome} height='100%'/>
-            <p>{produto.descricao}</p>
-            <h3>R$ {produto.preco.toFixed(2)}</h3>
+            <h4>{produto?.nome}</h4>
+            <img src={produto?.imagem} alt={produto?.nome} height='100%'/>
+            <p>{produto?.descricao}</p>
+            <h3>R$ {produto?.preco.toFixed(2)}</h3>
         </div>
     )
 }

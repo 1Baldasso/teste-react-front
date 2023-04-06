@@ -1,27 +1,33 @@
 import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 import Produto from '../../models/ProdutoModel'
 import { useLocation } from 'react-router-dom'
-import { adicionarProduto, editarProduto } from './service'
+import { adicionarProduto, editarProduto, deletarProduto } from './service'
 import './styles.css'
+import ProdutoModel from '../../models/ProdutoModel'
+import { useEffect, useState } from 'react'
+import { getProdutoById } from '../Detalhes/services'
 export default function FormProduto(props: { id?: string | undefined }) {
-    const produto: Produto = {
-        id: "abcguid123",
-        nome: "Produto Teste",
-        preco: 10,
-        categoria: "Teste",
-        descricao: "Teste",
-        imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgcSwChHJkUqoevTLo7igM9V4iPvU64XYcJQ&usqp=CAU"
-    };
+    const [tempFields,setTempFields] = useState<ProdutoModel>({} as ProdutoModel);
     const emptyProduto: Produto = {
-        id: "",
+        _id: "",
         nome: "",
         preco: 0,
+        quantidade: 0,
         categoria: "",
         descricao: "",
-        imagem: ""
+        imagem: "",
+        numeroDeCliques: 0
     };
+    useEffect(() => {
+        if (props.id) {
+            getProdutoById(props.id).then((produto) => {
+                setTempFields(produto);
+            });
+        }
+    }, []);
     const currentLocation = useLocation().pathname;
-    const fields = currentLocation === '/adicionar' ? emptyProduto : produto
+    const fields = currentLocation === '/adicionar' ? emptyProduto : tempFields;
     const action = currentLocation === '/adicionar' ? 'Criar Produto' : 'Editar';
     let finalFields = fields;
 
@@ -30,6 +36,7 @@ export default function FormProduto(props: { id?: string | undefined }) {
         finalFields.nome = id === 'formEditarNome' ? value : finalFields.nome;
         finalFields.preco = id === 'formEditarPreco' ? parseFloat(value) : finalFields.preco;
         finalFields.categoria = id === 'formEditarCategoria' ? value : finalFields.categoria;
+        finalFields.quantidade = id === 'formEditarQuantidade' ? parseInt(value) : finalFields.quantidade;
         finalFields.descricao = id === 'formEditarDescricao' ? value : finalFields.descricao;
         finalFields.imagem = id === 'formEditarImagem' ? value : finalFields.imagem;
     }
@@ -37,18 +44,22 @@ export default function FormProduto(props: { id?: string | undefined }) {
     function handleButtonClick(){
 
         if(action === 'Editar'){
-            handleCriar();
+            handleEditar();
         }
         else{
-            handleEditar();
+            handleCriar();
         }
     }
     function handleCriar(){
-        adicionarProduto(fields)
+        adicionarProduto(finalFields)
     }
     function handleEditar(){
-        editarProduto(props.id?? "",fields);
+        editarProduto(props.id?? "",finalFields);
     }
+    function handleDeletar(){
+        deletarProduto(props.id?? "");
+    }
+    
     return (
         <div>
             <Form className='formEditarProduto'>
@@ -84,16 +95,36 @@ export default function FormProduto(props: { id?: string | undefined }) {
                     defaultValue={fields.descricao} 
                     onChange={handleFieldChange}/>
                 </Form.Group>
+                <Form.Group controlId="formEditarQuantidade">
+                    <Form.Label>Quantidade</Form.Label>
+                    <Form.Control 
+                    type="number" placeholder="Quantidade" 
+                    defaultValue={fields.quantidade} 
+                    onChange={handleFieldChange}/>
+                </Form.Group>
                 <Form.Group controlId="formEditarImagem" >
                     <Form.Label>Imagem</Form.Label>
-                    <Form.Control type="text" placeholder="Imagem" />
-                </Form.Group>
-                <Form.Group>
                     <Form.Control 
-                    type="button" 
-                    value={action} 
-                    onClick={handleButtonClick} />
+                    type="text" 
+                    placeholder="Imagem" 
+                    onChange={handleFieldChange}/>
                 </Form.Group>
+                <div className='d-flex flex-row gap-3'>
+                    <Form.Group>
+                        <Form.Control 
+                        type="button" 
+                        value={action} 
+                        onClick={handleButtonClick} />
+                    </Form.Group>
+                    {action === 'Editar' && 
+                        <Button 
+                            onClick={handleDeletar} 
+                            variant='danger'
+                        >
+                            Deletar
+                        </Button>
+                    }
+                </div>
             </Form>
         </div>
     )
