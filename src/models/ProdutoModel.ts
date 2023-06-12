@@ -1,5 +1,5 @@
 export default class ProdutoModel{
-    _id!: string;
+    id!: string;
     nome!: string;
     preco!: number;
     descricao!: string;

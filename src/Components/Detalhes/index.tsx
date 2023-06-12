@@ -7,7 +7,7 @@ export default function Detalhes(props: {id: string | undefined})
     const [produto, setProduto] = useState<ProdutoModel>();
     if(props.id === undefined)
     {
-        redirect('/');
+        window.location.href = '/';
     }
     useEffect(() => {
         getProdutoById(props.id??"")
@@ -21,7 +21,7 @@ export default function Detalhes(props: {id: string | undefined})
             <h4>{produto?.nome}</h4>
             <img src={produto?.imagem} alt={produto?.nome} height='100%'/>
             <p>{produto?.descricao}</p>
-            <h3>R$ {produto?.preco.toFixed(2)}</h3>
+            <h3>R$ {produto?.preco}</h3>
         </div>
     )
 }

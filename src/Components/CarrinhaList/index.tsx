@@ -34,7 +34,7 @@ export default function CarrinhoList() {
     useEffect(() => {
         let total = 0;
         produtos.map((produto) => {
-            const quantidades = carrinho.find((item) => item.id === produto._id);
+            const quantidades = carrinho.find((item) => item.id === produto.id);
             return {...produto, ...quantidades}
         }).forEach((produto) => {
             total += produto.preco * produto.quantidade;
@@ -46,14 +46,14 @@ export default function CarrinhoList() {
             <Row md={3} className="g-4 gx-1">
                 {produtos.map((produto) => {
                     return (
-                        <Col key={produto._id}>
-                            <ItemCarrinho key={produto._id + "PI"} produto={produto} quantidade={produto.quantidade} />
+                        <Col key={produto.id}>
+                            <ItemCarrinho key={produto.id + "PI"} produto={produto} quantidade={produto.quantidade} />
                         </Col>
                     )
                 })}
             </Row>
-            <h3>Total</h3>
-            <h4>{valorTotal}</h4>
+            <h3 className='mt-3'>Total</h3>
+            <h4>R$ {valorTotal.toFixed(2)}</h4>
         </Container>
     )
 }

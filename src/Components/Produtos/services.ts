@@ -9,7 +9,7 @@ async function getProdutos(): Promise<Produto[]> {
     }
     const data = await response.json() as any[];
     const produtos = data.map((produto: any) => ({
-      _id: produto._id,
+      id: produto.id,
       nome: produto.nome,
       preco: produto.preco,
       quantidade: produto.quantidade,

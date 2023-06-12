@@ -8,7 +8,7 @@ async function getProdutoById(id: string): Promise<ProdutoModel> {
     }
     const data = await response.json();
     const produto = {
-      _id: data._id,
+      id: data._id,
       nome: data.nome,
       preco: data.preco,
       quantidade: data.quantidade,

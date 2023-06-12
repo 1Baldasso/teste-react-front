@@ -10,7 +10,7 @@ import { getProdutoById } from '../Detalhes/services'
 export default function FormProduto(props: { id?: string | undefined }) {
     const [tempFields,setTempFields] = useState<ProdutoModel>({} as ProdutoModel);
     const emptyProduto: Produto = {
-        _id: "",
+        id: "",
         nome: "",
         preco: 0,
         quantidade: 0,
@@ -55,7 +55,7 @@ export default function FormProduto(props: { id?: string | undefined }) {
             .then((produto) =>
             {
                 alert('Produto criado com sucesso!')
-                redirect('/');
+                window.location.href = `/`;
             })
             .catch(()=>alert('Erro ao criar produto!'));
         redirect('/');
@@ -65,7 +65,7 @@ export default function FormProduto(props: { id?: string | undefined }) {
             then((produto) =>
             {
                 alert('Produto editado com sucesso!')  
-                redirect('/');
+                window.location.href = `/`;
             }).catch(()=>alert('Erro ao editar produto!'));
     }
     function handleDeletar(){
@@ -73,7 +73,7 @@ export default function FormProduto(props: { id?: string | undefined }) {
             .then((produto) =>
             {
                 alert('Produto deletado com sucesso!')
-                redirect('/');
+                window.location.href = `/`;
             })
             .catch(()=>alert('Erro ao deletar produto!'));
     }
@@ -124,7 +124,8 @@ export default function FormProduto(props: { id?: string | undefined }) {
                     <Form.Label>Imagem</Form.Label>
                     <Form.Control 
                     type="text" 
-                    placeholder="Imagem" 
+                    placeholder="Imagem"
+                    defaultValue={fields.imagem}
                     onChange={handleFieldChange}/>
                 </Form.Group>
                 <div className='d-flex flex-row gap-3'>

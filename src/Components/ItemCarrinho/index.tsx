@@ -7,7 +7,7 @@ export default function ItemCarrinho(props: {produto: Produto, quantidade: numbe
 {
     const handleRemoverItemCarrinho = () => {
         const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
-        const index = carrinho.findIndex((item: { id: string; }) => item.id === props.produto._id);
+        const index = carrinho.findIndex((item: { id: string; }) => item.id === props.produto.id);
         carrinho.splice(index, 1);
         localStorage.setItem("carrinho", JSON.stringify(carrinho));
         window.location.reload();
@@ -15,7 +15,7 @@ export default function ItemCarrinho(props: {produto: Produto, quantidade: numbe
     return(
         <Card className="card-parent">
             <Card.Header>
-                <a href={`/editar/${props.produto._id}`} className="icone-editar">
+                <a href={`/editar/${props.produto.id}`} className="icone-editar">
                     <span className="material-symbols-outlined float-right">
                         edit
                     </span>
@@ -27,7 +27,7 @@ export default function ItemCarrinho(props: {produto: Produto, quantidade: numbe
             </Card.Header>
             <Card.Img src={props.produto?.imagem} alt={props.produto?.nome} className="card-image" />
             <Card.Footer>
-                <Card.Text className="preco">R$ {props.produto.preco.toFixed(2)}</Card.Text>
+                <Card.Text className="preco">R$ {props.produto.preco}</Card.Text>
                 <Card.Text className="preco">Quantidade: {props.quantidade}</Card.Text>
                 <Button
                     variant="dark"

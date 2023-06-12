@@ -6,7 +6,7 @@ export default function ProdutoItem(props: { produto: Produto }) {
     return (
         <Card className="card-parent">
             <Card.Header>
-                <a href={`/editar/${props.produto._id}`} className="icone-editar">
+                <a href={`/editar/${props.produto.id}`} className="icone-editar">
                     <span className="material-symbols-outlined float-right">
                         edit
                     </span>
@@ -18,11 +18,11 @@ export default function ProdutoItem(props: { produto: Produto }) {
             </Card.Header>
             <Card.Img src={props.produto.imagem} alt={props.produto.nome} className="card-image" />
             <Card.Footer>
-                <Card.Text className="preco">R$ {props.produto.preco.toFixed(2)}</Card.Text>
+                <Card.Text className="preco">R$ {props.produto.preco}</Card.Text>
                 <Button
                     variant="dark"
                     className="botao-comprar mb-3"
-                    href={`/comprar/${props.produto._id}`}
+                    href={`/comprar/${props.produto.id}`}
                 >
                     Comprar
                 </Button>

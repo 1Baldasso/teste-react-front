@@ -4,7 +4,7 @@ import config from "../../Config/config";
 
 function adicionarProduto(produto: ProdutoModel)
 {
-    const {_id, numeroDeCliques, ...rest} = produto;
+    const {id, numeroDeCliques, ...rest} = produto;
     const produtoRequestDto: ProdutoRequestDto = { 
         nome: rest.nome,
         preco: rest.preco,
@@ -13,14 +13,15 @@ function adicionarProduto(produto: ProdutoModel)
         categoria: rest.categoria,
         imagem: rest.imagem
     };
+    console.log(config.ENDPOINT)
     return fetch(`${config.ENDPOINT}/produtos`, {
         method: 'POST',
         mode: 'cors',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': '*/*',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
         },
-        body: JSON.stringify(produtoRequestDto)
+        body: new URLSearchParams(produtoRequestDto as any).toString()
     })
     .then(response => response.json()
     .then(data => ({ status: response.status, body: data })))
@@ -31,23 +32,23 @@ function adicionarProduto(produto: ProdutoModel)
             throw new Error(`Erro ${status}: ${body.message}`);
         }
     })
-    .catch();
+    .catch(error =>{ console.log(`Error: ${error}`)});
 }
 function editarProduto(id:string, produto: ProdutoModel)
 {
+    console.log(produto)
     return fetch(`${config.ENDPOINT}/produtos/${id}`, {
         method: 'PUT',
         mode: 'cors',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
         },
-        body: JSON.stringify(produto)
+        body: new URLSearchParams(produto as any).toString()
         })
             .then(response => response.json())
             .then(data => console.log(data))
-            .catch(error => console.log(`Error: ${error}
-            `));
+            .catch(error => console.log(`Error: ${error}`));
 }
 function deletarProduto(id:string)
 {
@@ -60,7 +61,6 @@ function deletarProduto(id:string)
     })
     .then(response => response.json())
     .then(data => console.log(data))
-    .catch(error => console.log(`Error: ${error}
-    `));
+    .catch(error => console.log(`Error: ${error}`));
 }
 export {adicionarProduto, editarProduto, deletarProduto};

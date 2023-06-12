@@ -2,7 +2,7 @@ const options: RequestInit = {
     mode: "cors"
 }
 const config = {
-    ENDPOINT: 'https://teste-node-back-production.up.railway.app',
+    ENDPOINT: 'http://localhost:8000/api',
     options: options
 }
 export default config;

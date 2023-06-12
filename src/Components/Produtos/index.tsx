@@ -103,8 +103,8 @@ export default function Produtos() {
         <Row md={width > 1024 ? 3 : width > 600 ? 2 : 1} className="g-4 gx-1">
           {produtos.map((produto) => {
             return (
-              <Col key={produto._id}>
-                <ProdutoItem key={produto._id + "PI"} produto={produto} />
+              <Col key={produto.id}>
+                <ProdutoItem key={produto.id + "PI"} produto={produto} />
               </Col>
             )
           })}
